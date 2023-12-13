@@ -1,0 +1,77 @@
+import React from 'react';
+import Image from "next/image";
+import styles from '../styles/style.module.css';
+import Link from "next/link"
+import {
+  Button,
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useForm } from "react-hook-form";
+import { ConnectWallet } from "@thirdweb-dev/react";
+
+const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
+  return (
+    <div className={styles.Auth}>
+        <Image src = "/images/th.jpg" alt = "login image" width = {300} height = {200} />
+
+      <form action="" method="post" onSubmit={handleSubmit(onSubmit)}>
+        <Typography variant="h4">Login</Typography>
+        <p>Welcome back! Please login to your account.</p>
+        <ConnectWallet />
+
+        <div className={styles.formgroup}>
+          <TextField
+            {...register("email", { required: "Email Field Required" })}
+            type="email"
+            label="Email"
+            color="success"
+            variant="outlined"
+          />
+          <Typography className={styles.error} variant="span">
+            {errors?.email && errors.email.message}
+          </Typography>
+
+          <TextField
+            {...register("psw", { required: "Password Field Required" })}
+            type="password"
+            label="Password"
+            color="success"
+            variant="outlined"
+          />
+          <Typography className={styles.error} variant="span">
+            {errors?.psw && errors.psw.message}
+          </Typography>
+
+          <FormControlLabel
+            control={<Checkbox color="success" />}
+            label="Remember Me"
+          />
+
+          <Button type="submit" variant="contained">
+            Login
+          </Button>
+
+          <Typography className={styles.body2} variant="body2">
+          Already a user?<Link href = "/register">register</Link>
+          </Typography>
+          
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default Login;
