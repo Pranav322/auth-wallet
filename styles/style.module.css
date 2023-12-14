@@ -2,15 +2,22 @@
 
 .Auth {
     width: 850px;
-    height: 520px;
-    margin: 0 auto; /* Center horizontally by setting left and right margins to auto */
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    border: 1px solid rgba(128, 128, 128, 0.267);
-    border-radius: 20px;
-    box-sizing: border-box;
-    box-shadow: 5px 5px 5px rgba(44, 44, 44, 0.151);
+  height: 520px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  border: 1px solid rgba(128, 128, 128, 0.267);
+  border-radius: 20px;
+  box-sizing: border-box;
+  box-shadow: 5px 5px 5px rgba(44, 44, 44, 0.151);
+  border-color: #0a3cce;
+
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   }
   
   .Auth img {
