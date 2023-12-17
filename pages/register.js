@@ -14,41 +14,55 @@ const Register = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [isRegistered, setIsRegistered] = useState(false);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     // Handle registration logic here
-
-    // Simulate successful registration
-    console.log('Registration data:', data);
-    setIsRegistered(true);
-
-    // Redirect to the OTP page
-    router.push('/otp');
+    try {
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.psw,
+          meterId: data.meterId
+        }),
+      });
+      if (response.ok) {
+        const { authToken } = await response.json();
+        // Save authToken in localStorage or state for future authenticated requests
+        console.log('Registration successful! Token:', authToken);
+        // Redirect to the OTP page
+        // router.push('/otp');
+        router.push('/index'); // Redirect to index page
+        setIsRegistered(true);
+      } else {
+        console.error('Login failed:', response.statusText);
+        router.push('/register');
+      }
+    }
+    catch (error) {
+      console.error('Login error:', error);
+    }
   };
 
   return (
     <div className={styles.Auth}>
       <Image src="/images/th.jpg" width={300} height={200} />
       <form action="" method="post" onSubmit={handleSubmit(onSubmit)}>
+
+        <Typography variant="h4">Sign Up</Typography>
+        <p>Explore new Features !</p>
+
+
         <ConnectWallet
           dropdownPosition={{
             side: 'bottom',
             align: 'center',
           }}
         />
-        <Typography variant="h4">Sign Up</Typography>
-        <p>Explore new Features !</p>
 
         <div className={styles.formgroup}>
-          <TextField
-            {...register('name', {
-              required: 'Name Field Required',
-              maxLength: { value: 15, message: 'Maximun 15 Characters' },
-            })}
-            type="text"
-            label="Name"
-            color="success"
-            variant="outlined"
-          />
           <Typography color="error" variant="span">{errors?.name && errors.name.message}</Typography>
 
           <TextField
@@ -72,6 +86,17 @@ const Register = () => {
             variant="outlined"
           />
           <Typography color="error" variant="span">{errors?.psw && errors.psw.message}</Typography>
+
+          <TextField
+            {...register("meterId", { required: "SmartMeter I'd is required" })}
+            type="text"
+            label="SmartMeter I'd"
+            color="success"
+            variant="outlined"
+          />
+          <Typography className={styles.error} variant="span">
+            {errors?.meterId && errors.meterId.message}
+          </Typography>
 
           <FormControlLabel control={<Checkbox color="success" />} label="Remember Me" />
 
